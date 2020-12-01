@@ -8,12 +8,8 @@ public class Day1 {
 
     public static void main(String[] args) {
         ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
-
-        // Star 1:
         int answerStarOne = starOne(data.get(0));
         System.out.println("Day " + day + " star 1: " + answerStarOne);
-
-        // Star 2:
         int answerStarTwo = starTwo(data.get(0));
         System.out.println("Day " + day + " star 2: " + answerStarTwo);
     }

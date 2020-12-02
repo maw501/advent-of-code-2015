@@ -8,18 +8,15 @@ public class Day2 {
 
     public static void main(String[] args) {
         ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
-        int answerStarOne = starOne(data);
-        System.out.println("Day " + day + " star 1: " + answerStarOne);
-        int answerStarTwo = starTwo(data.get(0));
-        System.out.println("Day " + day + " star 2: " + answerStarTwo);
-        calculateAllPresents(data);
+        System.out.println("Day " + day + " star 1: " + starOne(data));
+        System.out.println("Day " + day + " star 2: " + starTwo(data));
     }
 
     public static int starOne(ArrayList<String> data) {
         return calculateAllPresents(data);
     }
 
-    public static int starTwo(String line) {
+    public static int starTwo(ArrayList<String> data) {
         return 1;
     }
 

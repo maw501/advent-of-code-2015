@@ -13,11 +13,11 @@ public class Day2 {
     }
 
     public static int starOne(ArrayList<String> data) {
-        return calculateAllPresents(data);
+        return calculateAllPresentsPaper(data);
     }
 
     public static int starTwo(ArrayList<String> data) {
-        return 1;
+        return calculateAllPresentRibbon(data);
     }
 
     public static String[] splitPresentString(String s) {
@@ -33,21 +33,35 @@ public class Day2 {
         return array;
     }
 
-    public static int calculateAllPresents(ArrayList<String> data) {
+    public static int calculateAllPresentRibbon(ArrayList<String> data) {
+        int totalRibbon = 0;
+        for (String s : data) {
+            totalRibbon = totalRibbon + calculateSinglePresentRibbon(s);
+        }
+        return totalRibbon;
+    }
+
+    public static int calculateSinglePresentRibbon(String s) {
+        int[] array = convertStringDimsToIntegers(s);
+        java.util.Arrays.sort(array);
+        return 2 * array[0] + 2 * array[1] + array[0] * array[1] * array[2];
+    }
+
+    public static int calculateAllPresentsPaper(ArrayList<String> data) {
         int totalPaper = 0;
         for (String s : data) {
-            totalPaper = totalPaper + calculateSinglePresent(s);
+            totalPaper = totalPaper + calculateSinglePresentPaper(s);
         }
         return totalPaper;
     }
 
-    public static int calculateSinglePresent(String s) {
+    public static int calculateSinglePresentPaper(String s) {
         int[] array = convertStringDimsToIntegers(s);
-        int lw = array[0]*array[1];
-        int wh = array[1]*array[2];
-        int hl = array[2]*array[0];
+        int lw = array[0] * array[1];
+        int wh = array[1] * array[2];
+        int hl = array[2] * array[0];
         int smallestSide = Math.min(lw, Math.min(wh, hl));
-        int requiredPaper = 2*lw + 2*wh + 2*hl + smallestSide;
+        int requiredPaper = 2 * lw + 2 * wh + 2 * hl + smallestSide;
         return requiredPaper;
     }
 

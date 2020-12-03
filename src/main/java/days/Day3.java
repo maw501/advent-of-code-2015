@@ -17,8 +17,28 @@ public class Day3 {
         return calculateVisits(data.get(0)).size();
     }
 
+    public static int starTwo(ArrayList<String> data) {
+        String line = data.get(0);
+
+        List santaTurns = parseSantaTurns(line, 0);
+        List roboSantaTurns = parseSantaTurns(line, 1);
+
+        HashMap s = calculateVisits(String.valueOf(santaTurns));
+        HashMap rs = calculateVisits(String.valueOf(roboSantaTurns));
+        s.putAll(rs);
+        return s.size();
+    }
+
+    public static List parseSantaTurns(String line, int startIndex) {
+        List<Character> santaTurns = new ArrayList<>();
+        for (int i = startIndex; i < line.length(); i = i + 2) {
+            santaTurns.add(line.charAt(i));
+        }
+        return santaTurns;
+    }
+
     public static HashMap<String, Integer> calculateVisits(String line) {
-        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+        HashMap<String, Integer> hmap = new HashMap<>();
         hmap.put("0_0", 1);
         Integer currX = 0;
         Integer currY = 0;
@@ -32,26 +52,6 @@ public class Day3 {
         return hmap;
     }
 
-    public static int starTwo(ArrayList<String> data) {
-        String line = data.get(0);
-        // Santa
-        List<Character> santaTurns = new ArrayList<Character>();
-        for (int i = 0; i < line.length(); i = i + 2) {
-            santaTurns.add(line.charAt(i));
-        }
-        // Robo Santa
-        List<Character> roboSantaTurns = new ArrayList<Character>();
-        for (int i = 1; i < line.length(); i = i + 2) {
-            roboSantaTurns.add(line.charAt(i));
-        }
-        String santaString = new String(String.valueOf(santaTurns));
-        String roboString = new String(String.valueOf(roboSantaTurns));
-
-        HashMap s = calculateVisits(santaString);
-        HashMap rs = calculateVisits(roboString);
-        s.putAll(rs);
-        return s.size();
-    }
 
     public static void updateHashMap(HashMap hmap, String key) {
         if (hmap.containsKey(key)) {
@@ -75,7 +75,7 @@ public class Day3 {
     }
 
     public static String createHashMapKey(Integer x, Integer y) {
-        return Integer.toString(x) + "_" + Integer.toString(y);
+        return x + "_" + y;
     }
 
 

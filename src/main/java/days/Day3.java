@@ -52,7 +52,6 @@ public class Day3 {
         return hmap;
     }
 
-
     public static void updateHashMap(HashMap hmap, String key) {
         if (hmap.containsKey(key)) {
             int i = (int) hmap.get(key);

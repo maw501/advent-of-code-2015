@@ -14,19 +14,6 @@ public class Day3 {
     }
 
     public static int starOne(ArrayList<String> data) {
-//        String line = data.get(0);
-//        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-//        hmap.put("0_0", 1);
-//        Integer currX = 0;
-//        Integer currY = 0;
-//        for (int i = 0; i < line.length(); i++) {
-//            char c = line.charAt(i);
-//            currX = updateX(c, currX);
-//            currY = updateY(c, currY);
-//            String currentPositionKey = createHashMapKey(currX, currY);
-//            updateHashMap(hmap, currentPositionKey);
-//        }
-//        return hmap.size();
         return calculateVisits(data.get(0)).size();
     }
 

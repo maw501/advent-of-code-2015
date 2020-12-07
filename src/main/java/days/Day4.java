@@ -2,7 +2,6 @@ package main.java.days;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.security.MessageDigest;
 
 public class Day4 {
@@ -10,41 +9,43 @@ public class Day4 {
     static String data = "iwrupvqb";
 
     public static void main(String[] args) {
-        //ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
         System.out.println("Day " + day + " star 1: " + starOne(data));
         System.out.println("Day " + day + " star 2: " + starTwo(data));
     }
 
     public static int starOne(String inputString) {
-        return findMD5Integer(inputString, 5);
+        return findMD5IntegerSuffix(inputString, 5);
     }
 
     public static int starTwo(String inputString) {
-        return findMD5Integer(inputString, 6);
+        return findMD5IntegerSuffix(inputString, 6);
     }
 
-    public static int findMD5Integer(String inputString, int length) {
+    public static int findMD5IntegerSuffix(String inputString, int length) {
         boolean foundHash = false;
         int i = 0;
-        String hash = "";
-        String sub = "";
         while (!foundHash) {
-            String data = inputString + i;
-            hash = getMD5Hash(data);
-            sub = hash.substring(0, length);
-            try {
-                Integer parsedInt = Integer.parseInt(sub);
-                if (parsedInt == 0) {
-                    foundHash = true;
-                    return i;
-                }
-            } catch (NumberFormatException e) {
+            String hash = getMD5Hash(inputString + i);
+            String sub = hash.substring(0, length);
+            if (subStringToInt(sub, length) == 0) {
+                foundHash = true;
+                return i;
             }
             i++;
         }
         return i;
     }
 
+    public static int subStringToInt(String inputString, int stringLength) {
+        String sub = inputString.substring(0, stringLength);
+        try {
+            Integer parsedInt = Integer.parseInt(sub);
+            return parsedInt;
+        } catch (
+                NumberFormatException e) {
+            return 99;
+        }
+    }
 
     public static String getMD5Hash(String hashInput) {
         try {

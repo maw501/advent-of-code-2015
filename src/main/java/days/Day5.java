@@ -25,11 +25,12 @@ public class Day5 {
     }
 
     public static int starTwo(ArrayList<String> data) {
-        int counter = 0;
+        int numberNiceStings = 0;
         for (String s : data) {
-            if (stringHasTwoPairs(s) && stringLetterRepeatsByOne(s)) counter++;
+            if (stringHasTwoPairs(s) && stringLetterRepeatsByOne(s))
+                numberNiceStings++;
         }
-        return counter;
+        return numberNiceStings;
     }
 
     public static boolean stringHasTwoPairs(String s) {

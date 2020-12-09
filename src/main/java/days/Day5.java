@@ -1,6 +1,7 @@
 package main.java.days;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Day5 {
     static int day = 5;
@@ -24,7 +25,42 @@ public class Day5 {
     }
 
     public static int starTwo(ArrayList<String> data) {
-        return 1;
+        int counter = 0;
+        for (String s : data) {
+            boolean c1 = stringHasTwoPairs(s, 0);
+            boolean c2 = stringHasTwoPairs(s, 1);
+            boolean c3 = stringLetterRepeatsByOne(s, 0);
+            boolean c4 = stringLetterRepeatsByOne(s, 1);
+            //System.out.println(s + " : " + c3 + " : " + c4);
+            if ((c1 || c2) && (c3 || c4)) counter++;
+            //System.out.println(s + " even: " + c1 + " odd: " + c2);
+        }
+        return counter;
+    }
+
+    public static boolean stringHasTwoPairs(String s, int startIndex) {
+        HashSet<String> hash = new HashSet<>();
+        hash.add(s.substring(startIndex, startIndex + 2));
+        int stringLength = s.length();
+        for (int i = startIndex + 2; i < stringLength - 1; i = i + 2) {
+            String sub = s.substring(i, i + 2);
+            if (hash.contains(sub)) {
+//                System.out.println(
+//                        s + " found: " + sub + " start: " + startIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean stringLetterRepeatsByOne(String s, int startIndex) {
+        int stringLength = s.length();
+        char prevChar = s.charAt(0);
+        for (int i = startIndex + 2; i < stringLength - 1; i = i + 2) {
+            char currChar = s.charAt(i);
+            if (prevChar == currChar) return true;
+        }
+        return false;
     }
 
     public static boolean stringHasTwoConsecutiveLetters(String s) {

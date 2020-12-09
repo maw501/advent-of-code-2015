@@ -15,12 +15,10 @@ public class Day5 {
     public static int starOne(ArrayList<String> data) {
         int numberNiceStings = 0;
         for (String s : data) {
-            boolean c1 = stringHasThreeVowels(s);
-            boolean c2 = stringHasTwoConsecutiveLetters(s);
-            boolean c3 = stringHasNoBannedSubstring(s);
-            boolean niceString = c1 && c2 && c3;
+            boolean niceString = stringHasThreeVowels(s) &&
+                    stringHasTwoConsecutiveLetters(s) &&
+                    stringHasNoBannedSubstring(s);
             if (niceString) numberNiceStings++;
-            System.out.println(s + " is nice: " + niceString);
         }
         return numberNiceStings;
     }

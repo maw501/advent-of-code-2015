@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Day5 {
     static int day = 5;
     static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
-    static char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
     public static void main(String[] args) {
         ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
@@ -14,12 +13,16 @@ public class Day5 {
     }
 
     public static int starOne(ArrayList<String> data) {
+        int numberNiceStings = 0;
         for (String s : data) {
             boolean c1 = stringHasThreeVowels(s);
             boolean c2 = stringHasTwoConsecutiveLetters(s);
-            System.out.println(s + " : " + c1 + " and " + c2);
+            boolean c3 = stringHasNoBannedSubstring(s);
+            boolean niceString = c1 && c2 && c3;
+            if (niceString) numberNiceStings++;
+            System.out.println(s + " is nice: " + niceString);
         }
-        return 1;
+        return numberNiceStings;
     }
 
     public static int starTwo(ArrayList<String> data) {
@@ -36,6 +39,18 @@ public class Day5 {
             }
         }
         return false;
+    }
+
+    public static boolean stringHasNoBannedSubstring(String s) {
+        char prevChar = s.charAt(0);
+        for (char currChar : s.substring(1).toCharArray()) {
+            if (prevChar == 'a' && currChar == 'b') return false;
+            if (prevChar == 'c' && currChar == 'd') return false;
+            if (prevChar == 'p' && currChar == 'q') return false;
+            if (prevChar == 'x' && currChar == 'y') return false;
+            prevChar = currChar;
+        }
+        return true;
     }
 
     public static boolean stringHasThreeVowels(String s) {

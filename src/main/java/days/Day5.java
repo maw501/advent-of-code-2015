@@ -15,13 +15,27 @@ public class Day5 {
 
     public static int starOne(ArrayList<String> data) {
         for (String s : data) {
-            stringHasThreeVowels(s);
+            boolean c1 = stringHasThreeVowels(s);
+            boolean c2 = stringHasTwoConsecutiveLetters(s);
+            System.out.println(s + " : " + c1 + " and " + c2);
         }
         return 1;
     }
 
     public static int starTwo(ArrayList<String> data) {
         return 1;
+    }
+
+    public static boolean stringHasTwoConsecutiveLetters(String s) {
+        char prevChar = s.charAt(0);
+        for (char c : s.substring(1).toCharArray()) {
+            if (c == prevChar) {
+                return true;
+            } else {
+                prevChar = c;
+            }
+        }
+        return false;
     }
 
     public static boolean stringHasThreeVowels(String s) {

@@ -19,86 +19,55 @@ public class Day7 {
 
     public static int starOne(ArrayList<String> data) {
         getAllWires(data);
-        //sort(allWires);
-        //System.out.println(allWires);
         HashMap<String, List<Integer>> wireToValuesMap = new HashMap<>();  // contains wire to current values
         HashMap<String, Wire> wireMap = new HashMap<>();  // contains wire to its dependents
 
         // First pass through
         for (String line : data) {
-            System.out.println(line);
             Wire wire = new Wire(line);
             wire.processLine();
-
-            List<String> toRemove = new ArrayList();
             Set<String> inputStrings = wire.getWireDependencies();
             for (String s : inputStrings) {
                 if (tryParse(s) != -99) {
                     wireToValuesMap = updateWireValues(wireToValuesMap, wire.getName(), s);
-                    System.out.println(wire.getName() + " has a value: " + tryParse(s));
-                    toRemove.add(s);
+
                 }
             }
-            for (String s : toRemove) {
-                wire.removeString(s);
-                System.out.println("Removed: " + s + " from inputs of: " + wire.getName());
-            }
+
             wireMap.put(wire.getName(), wire);
-            Set<String> newInputStrings = wire.getWireDependencies();
-            System.out.println("New dependents: " + newInputStrings);
-            System.out.println("-------------------");
         }
-
-        // Now do what?
-        // Get all wires with no dependents
-//        Set<String> resolvedWires = new HashSet<>();
-//        for (String w : allWires) {
-//            Wire wMap = wireMap.get(w);
-//            Set<String> blah = wMap.getWireDependencies();
-//            int l = wMap.getWireDependencies().size();
-//            if (l == 0) resolvedWires.add(w);
-//            System.out.println(w + " STILL DEPENDS ON : " + blah + " len: " + l);
-//        }
-//        System.out.println(resolvedWires);
-
-        boolean stillResolving = true;
-        Set<String> unresolvedWires = new HashSet<>();
-        unresolvedWires.addAll(allWires);
-        Set<String> resolvedWires = new HashSet<>();
-        int counter = 0;
-        while (stillResolving) {
-            System.out.println("Unresolved: " + unresolvedWires);
-            for (String wire : unresolvedWires){
-                Wire wMap = wireMap.get(wire);
-                Set<String> dependencies = wMap.getWireDependencies();
-                int numRemainingDependencies = wMap.getWireDependencies().size();
-                if (numRemainingDependencies == 0) resolvedWires.add(wire);
-                //System.out.println(wire + " STILL DEPENDS ON : " + dependencies + " len: " + numRemainingDependencies);
-
-                // Loop over each dependency:
-                for (String dep : dependencies) {
-                    System.out.println();
+        boolean frustrated = true;
+        Wire targetWire = wireMap.get("h");
+        Set<Integer> base = new HashSet<>();
+        Set<String> dependencies = targetWire.getWireDependencies();
+        System.out.println("----------------------------");
+        System.out.println("Starting dep: " + dependencies);
+        System.out.println("----------------------------");
+        while (frustrated){
+            Set<String> toRemove = new HashSet<>();
+            Set<String> toAdd = new HashSet<>();
+            for (String dep : dependencies){
+                System.out.println("Processing dep: " + dep);
+                if (tryParse(dep) != -99){
+                    base.add(tryParse(dep));
+                    toRemove.add(dep);
+                } else {
+                    Wire depWire = wireMap.get(dep);
+                    Set<String> addDep = depWire.getWireDependencies();
+                    System.out.println("Adding deps: " + addDep);
+                    toAdd.addAll(depWire.getWireDependencies());
                 }
+                toRemove.add(dep);
             }
-            System.out.println("Resolved: " + resolvedWires);
-
-            // Remove resolved wires:
-            for (String resolvedWire: resolvedWires){
-                if (unresolvedWires.contains(resolvedWire)) {
-                    unresolvedWires.remove(resolvedWire);
-                }
-            }
-
-
-
-            // Loop termination
-            if (unresolvedWires.size() == 0){
-                stillResolving = false;
-            }
-            counter++;
-            if (counter > 1) stillResolving = false;
+            System.out.println("To add: " + toAdd);
+            System.out.println("To remove: " + toRemove);
+            dependencies.removeAll(toRemove);
+            dependencies.addAll(toAdd);
+            System.out.println("Bottom: " + dependencies);
+            System.out.println("----------------------------");
+            if (dependencies.size() == 0) frustrated = false;
         }
-
+        System.out.println(base);
         return 1;
     }
 
@@ -109,7 +78,7 @@ public class Day7 {
             h.put(key, new ArrayList());
             h.get(key).add(tryParse(s));
         }
-        System.out.println(key + " has a value: " + tryParse(s));
+       // System.out.println(key + " has a value: " + tryParse(s));
         return h;
     }
 

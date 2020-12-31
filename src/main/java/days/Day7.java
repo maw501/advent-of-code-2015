@@ -6,10 +6,11 @@ import java.util.*;
 
 public class Day7 {
     static int day = 7;
-    private static HashMap<String, Integer> wireValues = new HashMap<>();
+    private static HashMap<String, Short> wireValues = new HashMap<>();
     private static HashMap<String, Set<String>> wireDependencyMap =
             new HashMap<>();
     private static HashMap<String, String> wireOperatorMap = new HashMap<>();
+    private static HashMap<String, Integer> wireShiftMap = new HashMap<>();
 
     public static void main(String[] args) {
         ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
@@ -18,24 +19,24 @@ public class Day7 {
         starOne(data);
     }
 
-    public static int starOne(ArrayList<String> data) {
+    public static short starOne(ArrayList<String> data) {
         buildWireDependencyMaps(data);
 
-        String targetWire = "l";
-        int wireValue = getWireValue(targetWire);
-        wireValues.put(targetWire, wireValue);
+        String targetWire = "f";
+        short wireValue = getWireValue(targetWire);
+        System.out.println("----------------------");
         System.out.println(wireValues);
         return 1;
     }
 
-    public static int getWireValue(String wireName) {
-        // Recursively gets a wire's value
+    public static short getWireValue(String wireName) {
+        short finalWireValue = -99;
         Set<String> dependencies = wireDependencyMap.get(wireName);
         int numDependencies = dependencies.size();
         String operator = wireOperatorMap.get(wireName);
         Set<String> unresolvedDependencies = new HashSet<>();
         System.out.println(
-                "Getting value for: " + wireName + " with deps: " + dependencies);
+                "Getting value for: " + wireName + " with deps: " + dependencies + " operator: " + operator);
         for (String dep : dependencies) {
             boolean resolvableDependency = canGetWiresValue(dep);
             System.out.println(dep + " is resolvable: " + resolvableDependency);
@@ -45,20 +46,60 @@ public class Day7 {
         }
         boolean canResolveAllDependencies = unresolvedDependencies.size() == 0;
 
-        // Resolve
         if (canResolveAllDependencies) {
-            if (numDependencies == 1){
-
+            if (numDependencies == 1) {
+                for (String dep : dependencies) {
+                    finalWireValue = resolveSingleDep(wireName, dep, operator);
+                }
             } else if (numDependencies == 2) {
-
+                System.out.println("woohoo");
             }
-            System.out.println(operator);
-        } else {  // call recursively
-            for (String dep : unresolvedDependencies){
-                getWireValue(dep);
+        } else {  // call recursively to resolve each dependency
+            for (String dep : unresolvedDependencies) {
+                System.out.println("Getting value for dep: " + dep);
+                short depValue = getWireValue(dep);
+                System.out.println("Recursive call for: " + dep + " and " +
+                        "value: " + depValue);
+                wireValues.put(dep, depValue);
+                finalWireValue = resolveSingleDep(wireName, dep, operator);
             }
         }
-        return 9;
+        wireValues.put(wireName, finalWireValue);
+        return finalWireValue;
+    }
+
+    public static short resolveSingleDep(String wireName,
+                                         String dep,
+                                         String operator) {
+        short finalWireValue = -99;
+        short depValue;
+        if (wireValues.containsKey(dep)) {
+            System.out.println("Retrieving value for: " + dep);
+            depValue = wireValues.get(dep);
+        } else {
+            depValue = tryParse(dep);
+        }
+
+        if (operator.equals("ASSIGN")) {
+            finalWireValue = depValue;
+        } else if (operator.equals("LSHIFT")) {
+            int shiftValue = wireShiftMap.get(wireName);
+            finalWireValue = (short) (depValue << shiftValue);
+            System.out.println(
+                    "LSHIFT " + depValue + " by " + shiftValue + " = " + finalWireValue);
+        } else if (operator.equals("RSHIFT")) {
+            int shiftValue = wireShiftMap.get(wireName);
+            finalWireValue = (short) (depValue >>> shiftValue);
+            System.out.println("RSHIFT " + depValue + " by " + shiftValue +
+                    " = " + finalWireValue);
+        } else if (operator.equals("NOT")) {
+            finalWireValue = (short) ~depValue;
+            System.out.println("NOT " + depValue + " = " + finalWireValue);
+        }
+        System.out.println(
+                "Assigning value: " + finalWireValue + " to: " + wireName +
+                        " operator: " + operator);
+        return finalWireValue;
     }
 
     public static boolean canGetWiresValue(String wire) {
@@ -73,10 +114,13 @@ public class Day7 {
             String wireName = result[result.length - 1];
             Set<String> dependencies = extractWireDependencies(line);
             String operator = extractWireOperators(line);
+            int shiftValue = extractWireShiftOperators(line);
             wireDependencyMap.put(wireName, dependencies);
             wireOperatorMap.put(wireName, operator);
+            wireShiftMap.put(wireName, shiftValue);
             System.out.println(wireName + " has deps: " + dependencies);
         }
+        System.out.println("===================================");
     }
 
     public static Set<String> extractWireDependencies(String line) {
@@ -116,78 +160,18 @@ public class Day7 {
         }
     }
 
-//    public static int starOneTmp(ArrayList<String> data) {
-//        getAllWires(data);
-//        HashMap<String, List<Integer>> wireToValuesMap = new HashMap<>();
-// contains wire to current values
-//        HashMap<String, Wire> wireMap = new HashMap<>();  // contains wire
-//        to its dependents
-//
-//        // First pass through
-//        for (String line : data) {
-//            Wire wire = new Wire(line);
-//            wire.processLine();
-//            Set<String> inputStrings = wire.getWireDependencies();
-//            for (String s : inputStrings) {
-//                if (tryParse(s) != -99) {
-//                    wireToValuesMap = updateWireValues(wireToValuesMap,
-//                    wire.getName(), s);
-//
-//                }
-//            }
-//            wireMap.put(wire.getName(), wire);
-//        }
-//
-//        boolean frustrated = true;
-//        Wire targetWire = wireMap.get("h");
-//        Set<Integer> base = new HashSet<>();
-//        Set<String> dependencies = targetWire.getWireDependencies();
-//        System.out.println("----------------------------");
-//        System.out.println("Starting dep: " + dependencies);
-//        System.out.println("----------------------------");
-//        while (frustrated) {
-//            Set<String> toRemove = new HashSet<>();
-//            Set<String> toAdd = new HashSet<>();
-//            for (String dep : dependencies) {
-//                System.out.println("Processing dep: " + dep);
-//                if (tryParse(dep) != -99) {
-//                    base.add(tryParse(dep));
-//                    toRemove.add(dep);
-//                } else {
-//                    Wire depWire = wireMap.get(dep);
-//                    Set<String> addDep = depWire.getWireDependencies();
-//                    System.out.println("Adding deps: " + addDep);
-//                    toAdd.addAll(depWire.getWireDependencies());
-//                }
-//                toRemove.add(dep);
-//            }
-//            System.out.println("To add: " + toAdd);
-//            System.out.println("To remove: " + toRemove);
-//            dependencies.removeAll(toRemove);
-//            dependencies.addAll(toAdd);
-//            System.out.println("Bottom: " + dependencies);
-//            System.out.println("----------------------------");
-//            if (dependencies.size() == 0) frustrated = false;
-//        }
-//        System.out.println(base);
-//        return 1;
-//    }
-
-    public static HashMap<String, List<Integer>> updateWireValues(
-            HashMap<String, List<Integer>> h, String key, String s) {
-        if (h.containsKey(key)) {
-            h.get(key).add(tryParse(s));
+    public static int extractWireShiftOperators(String line) {
+        String[] result = line.split(" ");
+        if (line.contains("SHIFT")) {
+            return Integer.parseInt(result[2]);
         } else {
-            h.put(key, new ArrayList());
-            h.get(key).add(tryParse(s));
+            return 0;
         }
-        // System.out.println(key + " has a value: " + tryParse(s));
-        return h;
     }
 
-    public static int tryParse(String s) {
+    public static short tryParse(String s) {
         try {
-            return Integer.parseInt(s);
+            return (short) Integer.parseInt(s);
         } catch (NumberFormatException nfe) {
             return -99;
         }
@@ -202,8 +186,7 @@ public class Day7 {
         }
     }
 
-
-    public static int starTwo(ArrayList<String> data) {
+    public static short starTwo(ArrayList<String> data) {
         return 1;
     }
 }

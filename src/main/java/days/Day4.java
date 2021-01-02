@@ -5,58 +5,54 @@ import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
 
 public class Day4 {
-  static int day = 4;
-  static String data = "iwrupvqb";
+  private static final int day = 4;
+  private static final String data = "iwrupvqb";
 
   public static void main(String[] args) {
-    System.out.println("Day " + day + " star 1: " + starOne(data));
-    System.out.println("Day " + day + " star 2: " + starTwo(data));
+    System.out.println("Day " + day + " star 1: " + starOne());
+    System.out.println("Day " + day + " star 2: " + starTwo());
   }
 
-  public static int starOne(String inputString) {
-    return findMD5IntegerSuffix(inputString, 5);
+  private static int starOne() {
+    return findMD5IntegerSuffix(5);
   }
 
-  public static int starTwo(String inputString) {
-    return findMD5IntegerSuffix(inputString, 6);
+  private static int starTwo() {
+    return findMD5IntegerSuffix(6);
   }
 
-  public static int findMD5IntegerSuffix(String inputString, int length) {
-    boolean foundHash = false;
+  private static int findMD5IntegerSuffix(int length) {
     int i = 0;
-    while (!foundHash) {
-      String hash = getMD5Hash(inputString + i);
+    while (true) {
+      String hash = getMD5Hash(Day4.data + i);
       String sub = hash.substring(0, length);
       if (subStringToInt(sub, length) == 0) {
-        foundHash = true;
         return i;
       }
       i++;
     }
-    return i;
   }
 
-  public static int subStringToInt(String inputString, int stringLength) {
+  private static int subStringToInt(String inputString, int stringLength) {
     String sub = inputString.substring(0, stringLength);
     try {
-      Integer parsedInt = Integer.parseInt(sub);
-      return parsedInt;
+      return Integer.parseInt(sub);
     } catch (NumberFormatException e) {
       return 99;
     }
   }
 
-  public static String getMD5Hash(String hashInput) {
+  private static String getMD5Hash(String hashInput) {
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
       byte[] messageDigest = md.digest(hashInput.getBytes());
       BigInteger no = new BigInteger(1, messageDigest);
 
-      String hashtext = no.toString(16);
+      StringBuilder hashtext = new StringBuilder(no.toString(16));
       while (hashtext.length() < 32) {
-        hashtext = "0" + hashtext;
+        hashtext.insert(0, "0");
       }
-      return hashtext;
+      return hashtext.toString();
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
     }

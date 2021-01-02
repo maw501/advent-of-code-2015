@@ -1,17 +1,16 @@
 package main.java.days;
 
-import java.util.ArrayList;
-
 public class Day1 {
-  static int day = 1;
+  private static final int day = 1;
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
-    System.out.println("Day " + day + " star 1: " + starOne(data.get(0)));
-    System.out.println("Day " + day + " star 2: " + starTwo(data.get(0)));
+    var data = main.java.utils.ReadTextFile.readFile(day);
+    Day1 day1 = new Day1();
+    System.out.println("Day " + day + " star 1: " + day1.starOne(data.get(0)));
+    System.out.println("Day " + day + " star 2: " + day1.starTwo(data.get(0)));
   }
 
-  public static int starOne(String line) {
+  private int starOne(String line) {
     int currentFloor = 0;
     for (int position = 0; position < line.length(); position++) {
       currentFloor = nextFloor(line, position, currentFloor);
@@ -19,7 +18,7 @@ public class Day1 {
     return currentFloor;
   }
 
-  public static int starTwo(String line) {
+  private int starTwo(String line) {
     int currentFloor = 0;
     int position = 0;
     while (currentFloor != -1) {
@@ -29,10 +28,9 @@ public class Day1 {
     return position;
   }
 
-  public static int nextFloor(String line, int position, int currentFloor) {
-    char c = line.charAt(position);
-    if (c == '(') return currentFloor + 1;
-    if (c == ')') return currentFloor - 1;
+  private int nextFloor(String line, int position, int currentFloor) {
+    if (line.charAt(position) == '(') return ++currentFloor;
+    if (line.charAt(position) == ')') return --currentFloor;
     throw new java.lang.RuntimeException("What the fluff");
   }
 }

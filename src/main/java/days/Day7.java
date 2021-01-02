@@ -4,19 +4,20 @@ import java.util.*;
 
 public class Day7 {
   static int day = 7;
-  private static HashMap<String, Short> wireValues;
-  private static HashMap<String, Set<String>> wireDependencyMap;
-  private static HashMap<String, String> wireOperatorMap;
-  private static HashMap<String, Integer> wireShiftMap;
+  private HashMap<String, Short> wireValues = new HashMap<>();
+  private HashMap<String, Set<String>> wireDependencyMap = new HashMap<>();
+  private HashMap<String, String> wireOperatorMap = new HashMap<>();
+  private HashMap<String, Integer> wireShiftMap = new HashMap<>();
 
   public static void main(String[] args) {
+    Day7 d7s1 = new Day7();
+    Day7 d7s2 = new Day7();
     ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
-    System.out.println("Day " + day + " star 1: " + starOne(data));
-    System.out.println("Day " + day + " star 2: " + starTwo(data));
+    System.out.println("Day " + day + " star 1: " + d7s1.starOne(data));
+    System.out.println("Day " + day + " star 2: " + d7s2.starTwo(data));
   }
 
-  public static short starOne(ArrayList<String> data) {
-    initialize();
+  private short starOne(ArrayList<String> data) {
     buildWireDependencyMaps(data);
     String targetWire = "a";
     short finalValue = getWireValue(targetWire);
@@ -24,10 +25,9 @@ public class Day7 {
     return finalValue;
   }
 
-  public static short starTwo(ArrayList<String> data) {
-    initialize();
+  private short starTwo(ArrayList<String> data) {
     short starOneValue = starOne(data);
-    initialize();
+    flushMaps();
     buildWireDependencyMaps(data);
     String targetWire = "a";
     wireValues.put("b", starOneValue);
@@ -36,7 +36,7 @@ public class Day7 {
     return finalValue;
   }
 
-  public static void initialize() {
+  private void flushMaps() {
     wireValues = new HashMap<>();
     wireDependencyMap = new HashMap<>();
     wireOperatorMap = new HashMap<>();
@@ -51,7 +51,7 @@ public class Day7 {
     return x;
   }
 
-  public static short getWireValue(String wireName) {
+  private short getWireValue(String wireName) {
     short finalWireValue = -99;
     Set<String> dependencies = wireDependencyMap.get(wireName);
     int numDependencies = dependencies.size();
@@ -85,7 +85,7 @@ public class Day7 {
     return finalWireValue;
   }
 
-  public static short getDepValue(String depName) {
+  private short getDepValue(String depName) {
     if (wireValues.containsKey(depName)) {
       return wireValues.get(depName);
     } else {
@@ -93,7 +93,7 @@ public class Day7 {
     }
   }
 
-  public static short resolveSingleDep(String wireName, short depValue, String operator) {
+  private short resolveSingleDep(String wireName, short depValue, String operator) {
     short finalWireValue = -99;
     if (operator.equals("ASSIGN")) {
       finalWireValue = depValue;
@@ -109,7 +109,7 @@ public class Day7 {
     return finalWireValue;
   }
 
-  public static short resolveTwoDep(Set<String> dependencies, String operator) {
+  private short resolveTwoDep(Set<String> dependencies, String operator) {
     ArrayList<String> depNames = new ArrayList<String>(dependencies);
     short depValue1 = getDepValue(depNames.get(0));
     short depValue2 = getDepValue(depNames.get(1));
@@ -122,13 +122,13 @@ public class Day7 {
     }
   }
 
-  public static boolean canGetWiresValue(String wire) {
+  private boolean canGetWiresValue(String wire) {
     boolean alreadyHasValue = wireValues.containsKey(wire);
     boolean canBeConvertedToValue = canParseToInteger(wire);
     return alreadyHasValue || canBeConvertedToValue;
   }
 
-  public static void buildWireDependencyMaps(ArrayList<String> data) {
+  private void buildWireDependencyMaps(ArrayList<String> data) {
     for (String line : data) {
       String[] result = line.split(" ");
       String wireName = result[result.length - 1];
@@ -141,7 +141,7 @@ public class Day7 {
     }
   }
 
-  public static Set<String> extractWireDependencies(String line) {
+  private Set<String> extractWireDependencies(String line) {
     Set<String> inputStrings = new HashSet<>();
     String[] result = line.split(" ");
     if (line.contains("AND")) {
@@ -162,7 +162,7 @@ public class Day7 {
     return inputStrings;
   }
 
-  public static String extractWireOperators(String line) {
+  private String extractWireOperators(String line) {
     if (line.contains("AND")) return "AND";
     if (line.contains("OR")) return "OR";
     if (line.contains("NOT")) return "NOT";
@@ -171,7 +171,7 @@ public class Day7 {
     return "ASSIGN";
   }
 
-  public static int extractWireShiftOperators(String line) {
+  private int extractWireShiftOperators(String line) {
     String[] result = line.split(" ");
     if (line.contains("SHIFT")) {
       return Integer.parseInt(result[2]);
@@ -180,7 +180,7 @@ public class Day7 {
     }
   }
 
-  public static short tryParse(String s) {
+  private short tryParse(String s) {
     try {
       return (short) Integer.parseInt(s);
     } catch (NumberFormatException nfe) {
@@ -188,7 +188,7 @@ public class Day7 {
     }
   }
 
-  public static boolean canParseToInteger(String s) {
+  private boolean canParseToInteger(String s) {
     try {
       Integer.parseInt(s);
       return true;

@@ -13,7 +13,7 @@ public class Day8 {
     ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
     Day8 day8 = new Day8();
     System.out.println("Day " + day + " star 1: " + day8.starOne(data));
-    // Star Two answer is actually 2046 but all solutions return 2045??? Including on Reddit...
+    /* Star Two answer is actually 2046 but all solutions return 2045??? Including on Reddit... */
     System.out.println("Day " + day + " star 2: " + day8.starTwo(data));
   }
 
@@ -28,11 +28,6 @@ public class Day8 {
     return counter;
   }
 
-  private int getRegexCount(Pattern regexPattern, String s) {
-    Matcher matcher = regexPattern.matcher(s);
-    return (int) matcher.results().count();
-  }
-
   private int starTwo(ArrayList<String> data) {
     int counter = 0;
     for (String s : data) {
@@ -40,5 +35,10 @@ public class Day8 {
       counter += numMatchesDQorBS + 2;
     }
     return counter;
+  }
+
+  private int getRegexCount(Pattern regexPattern, String s) {
+    Matcher matcher = regexPattern.matcher(s);
+    return (int) matcher.results().count();
   }
 }

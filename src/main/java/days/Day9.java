@@ -40,7 +40,7 @@ public class Day9 {
       String currLocation = journey.get(i);
       String key = prevLocation + "_" + currLocation;
       int distance = cityDistances.get(key);
-      totalJourneyDistance = totalJourneyDistance + distance;
+      totalJourneyDistance += distance;
       prevLocation = currLocation;
     }
     return totalJourneyDistance;
@@ -90,7 +90,7 @@ public class Day9 {
   private long factorial(long x) {
     long result = 1;
     for (long i = x; i > 0; i--) {
-      result = result * i;
+      result *= i;
     }
     return result;
   }

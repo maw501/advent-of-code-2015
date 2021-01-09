@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Day11 {
   private static final int day = 11;
-  private String bannedChars = "iol";
-  private String regex = "(?<=(.))(?!\\1)";
+  private final String bannedChars = "iol";
+  private final String regex = "(?<=(.))(?!\\1)";
 
   public static void main(String[] args) {
     String starOneInput = "vzbxkghb";

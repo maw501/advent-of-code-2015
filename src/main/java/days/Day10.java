@@ -7,7 +7,7 @@ public class Day10 {
     String start = "3113322113";
     Day10 day10 = new Day10();
     System.out.println("Day " + day + " star 1: " + day10.starOne(start, 40));
-    System.out.println("Day " + day + " star 1: " + day10.starTwo(start, 50));
+    System.out.println("Day " + day + " star 2: " + day10.starTwo(start, 50));
   }
 
   private int starOne(String inputString, int nRuns) {

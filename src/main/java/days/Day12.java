@@ -19,6 +19,11 @@ public class Day12 {
       long starTwoAnswer = day12.iterateOverJsonArray(deserialize, true);
       System.out.println("Day " + day + " star 1: " + starOneAnswer);
       System.out.println("Day " + day + " star 2: " + starTwoAnswer);
+      // Using generic Object
+      long starOneAnswerObj = day12.calculateJsonValue(deserialize, false);
+      long starTwoAnswerObj = day12.calculateJsonValue(deserialize, true);
+      System.out.println("Day " + day + " star 1 with generics: " + starOneAnswerObj);
+      System.out.println("Day " + day + " star 2 with generics: " + starTwoAnswerObj);
     }
   }
 
@@ -45,6 +50,26 @@ public class Day12 {
         if (object.get(key).equals("red") && ignoreRed) return 0;
       if (object.get(key) instanceof BigDecimal)
         objectValue += ((BigDecimal) object.get(key)).longValue();
+    }
+    return objectValue;
+  }
+
+  private long calculateJsonValue(Object obj, boolean ignoreRed) {
+    long objectValue = 0;
+    if (obj instanceof JsonArray) {
+      for (Object o : (JsonArray) obj) {
+        objectValue += calculateJsonValue(o, ignoreRed);
+      }
+    } else if (obj instanceof JsonObject) {
+      Set<String> keys = ((JsonObject) obj).keySet();
+      for (String key : keys) {
+        Object value = ((JsonObject) obj).get(key);
+        if (value.equals("red") && ignoreRed) return 0;
+        objectValue += calculateJsonValue(value, ignoreRed);
+      }
+    } else if (obj instanceof String) {
+    } else if (obj instanceof BigDecimal) {
+      objectValue += ((BigDecimal) obj).longValue();
     }
     return objectValue;
   }

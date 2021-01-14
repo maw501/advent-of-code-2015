@@ -13,14 +13,20 @@ public class Day13 {
   public static void main(String[] args) {
     ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
     Day13 day13 = new Day13();
-    day13.buildDataMaps(data);
-    day13.buildSeatingArrangements();
-    System.out.println("Day " + day + " star 1: " + day13.calculateHappiness());
+    System.out.println("Day " + day + " star 1: " + day13.starOne(data));
     Day13 d13s2 = new Day13();
-    d13s2.buildDataMaps(data);
-    d13s2.updateDataMaps("Me", 0);
-    d13s2.buildSeatingArrangements();
-    System.out.println("Day " + day + " star 2: " + d13s2.calculateHappiness());
+    System.out.println("Day " + day + " star 2: " + d13s2.starTwo(data));
+  }
+
+  private int starOne(ArrayList<String> data) {
+    buildDataMaps(data);
+    return calculateHappiness();
+  }
+
+  private int starTwo(ArrayList<String> data) {
+    buildDataMaps(data);
+    updateDataMaps("Me", 0);
+    return calculateHappiness();
   }
 
   private int calculateHappiness() {
@@ -33,10 +39,7 @@ public class Day13 {
         String currGuest = arrangement.get(i);
         String neighbour1 = arrangement.get((i + numGuests - 1) % numGuests);
         String neighbour2 = arrangement.get((i + numGuests + 1) % numGuests);
-        String k1 = currGuest + "_" + neighbour1;
-        String k2 = currGuest + "_" + neighbour2;
-        int currGuestHappiness = seatingHappiness.get(k1) + seatingHappiness.get(k2);
-        planHappiness += currGuestHappiness;
+        planHappiness += guestHappiness(currGuest, neighbour1, neighbour2);
       }
       if (planHappiness > maxHappiness) {
         maxHappiness = planHappiness;
@@ -45,17 +48,20 @@ public class Day13 {
     return maxHappiness;
   }
 
+  private int guestHappiness(String guest, String n1, String n2) {
+    return seatingHappiness.get(buildKey(guest, n1)) + seatingHappiness.get(buildKey(guest, n2));
+  }
+
   private void updateDataMaps(String newGuest, int value) {
     allGuests.add(newGuest);
     for (String guest : allGuests) {
-      String k1 = guest + "_" + newGuest;
-      String k2 = newGuest + "_" + guest;
-      seatingHappiness.put(k1, value);
-      seatingHappiness.put(k2, value);
+      seatingHappiness.put(buildKey(guest, newGuest), value);
+      seatingHappiness.put(buildKey(newGuest, guest), value);
     }
   }
 
   private void buildDataMaps(ArrayList<String> data) {
+    // Builds guest list and guest to guest happiness rating
     for (String line : data) {
       String[] result = line.split(" ");
       allGuests.add(result[0]);
@@ -79,6 +85,7 @@ public class Day13 {
 
     int currIndex = 3;
     int currLen = 0;
+    // Due to symmetry we have (n-1)!/2 possible arrangements
     long finalLength = factorial(guests.size() - 1) / 2;
     ArrayList<ArrayList<String>> finalArray = new ArrayList<>();
 
@@ -105,5 +112,9 @@ public class Day13 {
       result *= i;
     }
     return result;
+  }
+
+  private String buildKey(String s1, String s2) {
+    return s1 + "_" + s2;
   }
 }

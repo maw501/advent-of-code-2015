@@ -1,5 +1,7 @@
 package main.java.days;
 
+import main.java.utils.Permutations;
+
 import java.util.*;
 
 public class Day9 {
@@ -64,34 +66,6 @@ public class Day9 {
     ArrayList<String> e1 = new ArrayList<>();
     e1.add(cities.get(0));
     currArray.add(e1);
-
-    int currIndex = 1;
-    int currLen = 0;
-    long finalLength = factorial(cities.size());
-    ArrayList<ArrayList<String>> finalArray = new ArrayList<>();
-
-    while (currLen < finalLength) {
-      finalArray = new ArrayList<>();
-      String currString = cities.get(currIndex);
-      for (ArrayList<String> element : currArray) {
-        for (int i = 0; i <= currIndex; i++) {
-          ArrayList<String> newElement = new ArrayList<>(element);
-          newElement.add(i, currString);
-          finalArray.add(newElement);
-        }
-      }
-      currLen = finalArray.size();
-      currIndex++;
-      currArray = new ArrayList<>(finalArray);
-    }
-    return finalArray;
-  }
-
-  private long factorial(long x) {
-    long result = 1;
-    for (long i = x; i > 0; i--) {
-      result *= i;
-    }
-    return result;
+    return Permutations.buildPermutations(cities, currArray, false);
   }
 }

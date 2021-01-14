@@ -1,5 +1,7 @@
 package main.java.days;
 
+import main.java.utils.Permutations;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -82,36 +84,7 @@ public class Day13 {
     e1.add(guests.get(1));
     e1.add(guests.get(2));
     currArray.add(e1);
-
-    int currIndex = 3;
-    int currLen = 0;
-    // Due to symmetry we have (n-1)!/2 possible arrangements
-    long finalLength = factorial(guests.size() - 1) / 2;
-    ArrayList<ArrayList<String>> finalArray = new ArrayList<>();
-
-    while (currLen < finalLength) {
-      finalArray = new ArrayList<>();
-      String currString = guests.get(currIndex);
-      for (ArrayList<String> element : currArray) {
-        for (int i = 0; i < currIndex; i++) {
-          ArrayList<String> newElement = new ArrayList<>(element);
-          newElement.add(i, currString);
-          finalArray.add(newElement);
-        }
-      }
-      currLen = finalArray.size();
-      currIndex++;
-      currArray = new ArrayList<>(finalArray);
-    }
-    return finalArray;
-  }
-
-  private long factorial(long x) {
-    long result = 1;
-    for (long i = x; i > 0; i--) {
-      result *= i;
-    }
-    return result;
+    return Permutations.buildPermutations(guests, currArray, true);
   }
 
   private String buildKey(String s1, String s2) {

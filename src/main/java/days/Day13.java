@@ -15,12 +15,12 @@ public class Day13 {
     Day13 day13 = new Day13();
     day13.buildDataMaps(data);
     day13.buildSeatingArrangements();
-    System.out.println("Day " + day + " star 1: " + day13.starOne());
-    // System.out.println("Day " + day + " star 2: " + day9.starTwo());
-  }
-
-  private int starOne() {
-    return calculateHappiness();
+    System.out.println("Day " + day + " star 1: " + day13.calculateHappiness());
+    Day13 d13s2 = new Day13();
+    d13s2.buildDataMaps(data);
+    d13s2.updateDataMaps("Me", 0);
+    d13s2.buildSeatingArrangements();
+    System.out.println("Day " + day + " star 2: " + d13s2.calculateHappiness());
   }
 
   private int calculateHappiness() {
@@ -43,6 +43,16 @@ public class Day13 {
       }
     }
     return maxHappiness;
+  }
+
+  private void updateDataMaps(String newGuest, int value) {
+    allGuests.add(newGuest);
+    for (String guest : allGuests) {
+      String k1 = guest + "_" + newGuest;
+      String k2 = newGuest + "_" + guest;
+      seatingHappiness.put(k1, value);
+      seatingHappiness.put(k2, value);
+    }
   }
 
   private void buildDataMaps(ArrayList<String> data) {

@@ -2,6 +2,7 @@ package main.java.days;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Day14 {
   private static final int day = 14;
@@ -25,28 +26,45 @@ public class Day14 {
   }
 
   private int starOne() {
-    ArrayList<Integer> distances = new ArrayList<>();
-    for (Reindeer reindeer : reindeers) {
-      distances.add(reindeer.getDistanceAfterTime(raceLength));
-    }
+    ArrayList<Integer> distances = Reindeer.getAllReindeerDistancesAfterTime(raceLength, reindeers);
     return Collections.max(distances);
   }
 
   private int starTwo() {
-    ArrayList<Integer> distances = new ArrayList<>();
-    for (Reindeer reindeer : reindeers) {
-      distances.add(reindeer.getDistanceAfterTime(raceLength));
+    ArrayList<Integer> distances;
+    HashMap<String, Integer> scores = initializeScoreMap(reindeers);
+    for (int t = 1; t <= raceLength; t++) {
+      distances = Reindeer.getAllReindeerDistancesAfterTime(t, reindeers);
+      updateScores(scores, distances);
     }
-    return Collections.max(distances);
+    return Collections.max(scores.values());
+  }
+
+  private void updateScores(HashMap<String, Integer> scores, ArrayList<Integer> distances) {
+    int currMaxDistance = Collections.max(distances);
+    for (int i = 0; i < reindeers.size(); i++) {
+      if (distances.get(i) == currMaxDistance) {
+        String reindeerName = reindeers.get(i).getName();
+        Integer newScore = scores.get(reindeerName) + 1;
+        scores.put(reindeerName, newScore);
+      }
+    }
+  }
+
+  private HashMap<String, Integer> initializeScoreMap(ArrayList<Reindeer> reindeers) {
+    var emptyScores = new HashMap<String, Integer>();
+    for (Reindeer r : reindeers) {
+      emptyScores.put(r.getName(), 0);
+    }
+    return emptyScores;
   }
 }
 
 class Reindeer {
-  String name;
-  int speed;
-  int stamina;
-  int restingDuration;
-  int burstLength;
+  private final String name;
+  private final int speed;
+  private final int stamina;
+  private final int burstLength;
 
   public Reindeer(String name, String speed, String stamina, String restingDuration) {
     this(
@@ -60,8 +78,11 @@ class Reindeer {
     this.name = name;
     this.speed = speed;
     this.stamina = stamina;
-    this.restingDuration = restingDuration;
     this.burstLength = stamina + restingDuration;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public int getDistanceAfterTime(int time) {
@@ -70,5 +91,12 @@ class Reindeer {
     int extraFlyingTime = Math.min(remainder, stamina);
     int totalFlyingTime = completeBursts * stamina + extraFlyingTime;
     return totalFlyingTime * speed;
+  }
+
+  public static ArrayList<Integer> getAllReindeerDistancesAfterTime(
+      int time, ArrayList<Reindeer> reindeers) {
+    ArrayList<Integer> distances = new ArrayList<>();
+    for (Reindeer reindeer : reindeers) distances.add(reindeer.getDistanceAfterTime(time));
+    return distances;
   }
 }

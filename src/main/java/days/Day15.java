@@ -6,7 +6,7 @@ public class Day15 {
   public static void main(String[] args) {
     Day15 day15 = new Day15();
     System.out.println("Day " + day + " star 1: " + day15.calculateBestScore(false));
-    System.out.println("Day " + day + " star 1: " + day15.calculateBestScore(true));
+    System.out.println("Day " + day + " star 2: " + day15.calculateBestScore(true));
   }
 
   private long calculateBestScore(boolean calorieRestriction) {

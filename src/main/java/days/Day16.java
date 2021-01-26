@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Day16 {
   private static final int day = 16;
-  private final int numSues = 500;
   private final HashMap<Integer, HashMap<String, Integer>> sueMap = new HashMap<>();
   private final HashMap<String, Integer> realSue = new HashMap<>();
 
@@ -18,10 +17,8 @@ public class Day16 {
   }
 
   private int starOne() {
-    for (int i = 1; i <= numSues; i++) {
-      HashMap<String, Integer> singleSue = sueMap.get(i);
-      boolean eliminated = isThisSueEliminatedExact(singleSue);
-      if (!eliminated) return i;
+    for (int i = 1; i <= 500; i++) {
+      if (!isThisSueEliminatedExact(sueMap.get(i))) return i;
     }
     return -1;
   }
@@ -30,7 +27,7 @@ public class Day16 {
     HashSet<String> requireExactValue =
         new HashSet<>(
             Arrays.asList("children", "samoyeds", "akitas", "vizslas", "cars", "perfumes"));
-    for (int i = 1; i <= numSues; i++) {
+    for (int i = 1; i <= 500; i++) {
       HashMap<String, Integer> singleSue = sueMap.get(i);
       boolean eliminated = isThisSueEliminatedRange(singleSue, requireExactValue);
       if (!eliminated) return i;

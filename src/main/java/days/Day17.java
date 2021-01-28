@@ -23,7 +23,7 @@ public class Day17 {
   private int starOne() {
     int successes = 0;
     for (int k = 1; k <= values.size(); k++) {
-      int combSuccess = combos(k);
+      int combSuccess = successesForCombOfSizeK(k);
       successes += combSuccess;
       successesPerCombSize.put(k, combSuccess);
     }
@@ -39,7 +39,7 @@ public class Day17 {
     return -1;
   }
 
-  private int combos(int k) {
+  private int successesForCombOfSizeK(int k) {
     int successes = 0;
     Combinations comb = new Combinations(values.size(), k);
     for (int[] ints : comb) {

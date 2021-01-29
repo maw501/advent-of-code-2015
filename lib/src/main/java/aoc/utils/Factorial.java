@@ -1,4 +1,4 @@
-package main.java.utils;
+package aoc.utils;
 
 public class Factorial {
   public static long factorial(long n) {

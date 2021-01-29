@@ -1,12 +1,13 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.ArrayList;
+import aoc.utils.ReadTextFile;
 
 public class Day2 {
   private static final int day = 2;
 
   public static void main(String[] args) {
-    var data = main.java.utils.ReadTextFile.readFile(day);
+    var data = ReadTextFile.readFile(day);
     Day2 day2 = new Day2();
     System.out.println("Day " + day + " star 1: " + day2.starOne(data));
     System.out.println("Day " + day + " star 2: " + day2.starTwo(data));

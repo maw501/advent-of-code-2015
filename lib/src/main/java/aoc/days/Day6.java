@@ -1,14 +1,15 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import aoc.utils.ReadTextFile;
 
 public class Day6 {
   private static final int day = 6;
   private static final int gridDim = 1000;
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     System.out.println("Day " + day + " star 1: " + starOne(data));
     System.out.println("Day " + day + " star 2: " + starTwo(data));
   }

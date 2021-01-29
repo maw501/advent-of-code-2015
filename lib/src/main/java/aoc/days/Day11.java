@@ -1,4 +1,4 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.HashSet;
 import java.util.Set;

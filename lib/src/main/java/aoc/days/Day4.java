@@ -1,4 +1,4 @@
-package main.java.days;
+package aoc.days;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package main.java.days;
+package aoc.days;
 
 public class Day15 {
   private static final int day = 15;

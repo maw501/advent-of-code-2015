@@ -1,4 +1,6 @@
-package main.java.days;
+package aoc.days;
+
+import aoc.utils.ReadTextFile;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -10,7 +12,7 @@ public class Day8 {
   private Pattern regexDQorBS = Pattern.compile("\\\\|\\\"");
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day8 day8 = new Day8();
     System.out.println("Day " + day + " star 1: " + day8.starOne(data));
     /* Star Two answer is actually 2046 but all solutions return 2045??? Including on Reddit... */

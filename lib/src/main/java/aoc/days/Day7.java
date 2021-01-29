@@ -1,6 +1,7 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.*;
+import aoc.utils.ReadTextFile;
 
 public class Day7 {
   private static final int day = 7;
@@ -11,7 +12,7 @@ public class Day7 {
   private final int defaultErrorValue = -99;
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day7 d7s1 = new Day7();
     short starOneAnswer = d7s1.starOne(data);
     Day7 d7s2 = new Day7();

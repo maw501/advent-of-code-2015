@@ -1,14 +1,15 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import aoc.utils.ReadTextFile;
 
 public class Day3 {
   private static final int day = 3;
 
   public static void main(String[] args) {
-    var data = main.java.utils.ReadTextFile.readFile(day);
+    var data = ReadTextFile.readFile(day);
     Day3 day3 = new Day3();
     System.out.println("Day " + day + " star 1: " + day3.starOne(data));
     System.out.println("Day " + day + " star 2: " + day3.starTwo(data));

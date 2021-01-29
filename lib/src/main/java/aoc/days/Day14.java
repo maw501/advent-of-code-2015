@@ -1,8 +1,9 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import aoc.utils.ReadTextFile;
 
 public class Day14 {
   private static final int day = 14;
@@ -10,7 +11,7 @@ public class Day14 {
   ArrayList<Reindeer> reindeers = new ArrayList<>();
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day14 day14 = new Day14();
     day14.getReindeers(data);
     System.out.println("Day " + day + " star 1: " + day14.starOne());

@@ -1,6 +1,7 @@
-package main.java.days;
+package aoc.days;
 
 import java.util.*;
+import aoc.utils.ReadTextFile;
 
 public class Day16 {
   private static final int day = 16;
@@ -8,7 +9,7 @@ public class Day16 {
   private final HashMap<String, Integer> realSue = new HashMap<>();
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day16 day16 = new Day16();
     day16.buildMap(data);
     day16.buildRealSueMap();

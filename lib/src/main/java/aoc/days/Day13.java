@@ -1,6 +1,7 @@
-package main.java.days;
+package aoc.days;
 
-import main.java.utils.Permutations;
+import aoc.utils.Permutations;
+import aoc.utils.ReadTextFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class Day13 {
   Set<String> allGuests = new HashSet<>();
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day13 day13 = new Day13();
     System.out.println("Day " + day + " star 1: " + day13.starOne(data));
     Day13 d13s2 = new Day13();

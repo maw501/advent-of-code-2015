@@ -1,6 +1,7 @@
-package main.java.days;
+package aoc.days;
 
-import main.java.utils.Permutations;
+import aoc.utils.Permutations;
+import aoc.utils.ReadTextFile;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ public class Day9 {
   Set<String> allCities = new HashSet<>();
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day9 day9 = new Day9();
     day9.buildDistanceMap(data);
     day9.calculateDistances();

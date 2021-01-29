@@ -1,9 +1,10 @@
-package main.java.days;
+package aoc.days;
 
 import org.apache.commons.math3.util.Combinations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import aoc.utils.ReadTextFile;
 
 public class Day17 {
   private static final int day = 17;
@@ -13,7 +14,7 @@ public class Day17 {
   private final int target = 150;
 
   public static void main(String[] args) {
-    ArrayList<String> data = main.java.utils.ReadTextFile.readFile(day);
+    ArrayList<String> data = ReadTextFile.readFile(day);
     Day17 day17 = new Day17();
     day17.buildMap(data);
     System.out.println("Day " + day + " star 1: " + day17.starOne());

@@ -8,65 +8,55 @@ import java.util.Arrays;
 public class Day18 {
   private static final int day = 18;
   private final int dim = 100;
-  private final int timeSteps = 100;
 
   public static void main(String[] args) {
     ArrayList<String> data = ReadTextFile.readFile(day);
     Day18 day18 = new Day18();
     int[][] gridStarOne = day18.buildGridFromInputData(data, false);
     int[][] gridStarTwo = day18.buildGridFromInputData(data, true);
-    System.out.println("Day " + day + " star 1: " + day18.starOne(gridStarOne, false));
-    System.out.println("Day " + day + " star 2: " + day18.starOne(gridStarTwo, true));
+    System.out.println("Day " + day + " star 1: " + day18.simulateGrid(gridStarOne, false));
+    System.out.println("Day " + day + " star 2: " + day18.simulateGrid(gridStarTwo, true));
   }
 
-  private int[][] buildGridFromInputData(ArrayList<String> data, boolean fixCorners) {
-    int[][] grid = new int[dim][dim];
-    for (int i = 0; i < dim; i++) {
-      char[] line = data.get(i).toCharArray();
-      for (int j = 0; j < dim; j++) {
-        if (checkIfLightIsACorner(i, j) && fixCorners) {
-          grid[i][j] = 1;
-          continue;
-        }
-        char c = line[j];
-        if (c == '#') grid[i][j] = 1;
-        if (c == '.') grid[i][j] = 0;
-      }
-    }
-    return grid;
-  }
-
-  private int starOne(int[][] grid, boolean fixCorners) {
+  private int simulateGrid(int[][] grid, boolean fixCorners) {
+    int timeSteps = 100;
     for (int t = 0; t < timeSteps; t++) {
-      int[][] nextGrid = new int[dim][dim];
-      for (int i = 0; i < dim; i++) {
-        for (int j = 0; j < dim; j++) {
-          if (checkIfLightIsACorner(i, j) && fixCorners) {
-            nextGrid[i][j] = 1;
-            continue;
-          }
-          ArrayList<ArrayList<Integer>> neighbours = getNeighbours(i, j);
-          int neighboursValue = getNeighboursValue(grid, neighbours);
-          int currentLightValue = grid[i][j];
-          if (currentLightValue == 1) {
-            if (neighboursValue == 2 || neighboursValue == 3) {
-              nextGrid[i][j] = 1;
-            } else {
-              nextGrid[i][j] = 0;
-            }
-          }
-          if (currentLightValue == 0) {
-            if (neighboursValue == 3) {
-              nextGrid[i][j] = 1;
-            } else {
-              nextGrid[i][j] = 0;
-            }
-          }
-        }
-      }
-      grid = nextGrid;
+      grid = computeNextGrid(grid, fixCorners);
     }
     return Arrays.stream(grid).flatMapToInt(Arrays::stream).sum();
+  }
+
+  private int[][] computeNextGrid(int[][] grid, boolean fixCorners) {
+    int[][] nextGrid = new int[dim][dim];
+    for (int i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
+        if (checkIfLightIsACorner(i, j) && fixCorners) {
+          nextGrid[i][j] = 1;
+          continue;
+        }
+        ArrayList<ArrayList<Integer>> neighbours = getNeighbours(i, j);
+        nextGrid[i][j] = getNextLightValue(getNeighboursValue(grid, neighbours), grid[i][j]);
+      }
+    }
+    return nextGrid;
+  }
+
+  private int getNextLightValue(int neighboursValue, int currentLightValue) {
+    if (currentLightValue == 1) {
+      if (neighboursValue == 2 || neighboursValue == 3) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    if (currentLightValue == 0) {
+      if (neighboursValue == 3) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return 0;
   }
 
   private boolean checkIfLightIsACorner(int i, int j) {
@@ -111,7 +101,19 @@ public class Day18 {
     return out;
   }
 
-  private int starTwo() {
-    return 1;
+  private int[][] buildGridFromInputData(ArrayList<String> data, boolean fixCorners) {
+    int[][] grid = new int[dim][dim];
+    for (int i = 0; i < dim; i++) {
+      char[] line = data.get(i).toCharArray();
+      for (int j = 0; j < dim; j++) {
+        if (checkIfLightIsACorner(i, j) && fixCorners) {
+          grid[i][j] = 1;
+          continue;
+        }
+        if (line[j] == '#') grid[i][j] = 1;
+        if (line[j] == '.') grid[i][j] = 0;
+      }
+    }
+    return grid;
   }
 }

@@ -8,45 +8,56 @@ import java.util.HashSet;
 
 public class Day19 {
   private static final int day = 19;
-  private HashMap<String, ArrayList<String>> replacements = new HashMap<>();
-  private String molecule;
+  private final HashMap<String, ArrayList<String>> replacements = new HashMap<>();
+  private String targetMolecule;
 
   public static void main(String[] args) {
     ArrayList<String> data = ReadTextFile.readFile(day);
     Day19 day19 = new Day19();
     day19.parseData(data);
     System.out.println("Day " + day + " star 1: " + day19.starOne());
-    //System.out.println("Day " + day + " star 2: " + day19.starTwo());
+    System.out.println("Day " + day + " star 2: " + day19.starTwo());
   }
 
   private int starOne() {
+    return generateSingleStepStates(targetMolecule).size();
+  }
+
+  private int starTwo() {
+    HashSet<String> next = generateSingleStepStates("e");
+    System.out.println(next);
+    return -1;
+  }
+
+  private HashSet<String> generateSingleStepStates(String molecule) {
     HashSet<String> out = new HashSet<>();
     for (String key : replacements.keySet()) {
-      ArrayList<Integer> indices = getAllIndicesFromMolecule(key);
+      ArrayList<Integer> indices = getAllIndicesFromMolecule(molecule, key);
       if (indices.size() > 0) {
         for (int i : indices) {
           ArrayList<String> substitutions = replacements.get(key);
           for (String sub : substitutions) {
-            String newMolecule = getStartOfMolecule(i) + sub + getEndOfMolecule(i, key);
+            String newMolecule =
+                getStartOfMolecule(molecule, i) + sub + getEndOfMolecule(molecule, i, key);
             out.add(newMolecule);
           }
         }
       }
     }
-    return out.size();
+    return out;
   }
 
-  private String getStartOfMolecule(int i) {
+  private String getStartOfMolecule(String molecule, int i) {
     if (i == 0) return "";
     return molecule.substring(0, i);
   }
 
-  private String getEndOfMolecule(int i, String key) {
+  private String getEndOfMolecule(String molecule, int i, String key) {
     if (i + key.length() >= molecule.length()) return "";
     return molecule.substring(i + key.length());
   }
 
-  private ArrayList<Integer> getAllIndicesFromMolecule(String findString) {
+  private ArrayList<Integer> getAllIndicesFromMolecule(String molecule, String findString) {
     int lastIndex = 0;
     ArrayList<Integer> indices = new ArrayList<>();
     while (lastIndex != -1) {
@@ -73,7 +84,7 @@ public class Day19 {
           replacements.put(result[0], replacement);
         }
       }
-      if (result.length == 1 && !line.equals("")) molecule = result[0];
+      if (result.length == 1 && !line.equals("")) targetMolecule = result[0];
     }
   }
 }

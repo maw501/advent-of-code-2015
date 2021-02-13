@@ -3,6 +3,7 @@ package aoc.days;
 import aoc.utils.ReadTextFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -10,6 +11,7 @@ public class Day19 {
   private static final int day = 19;
   private final HashMap<String, ArrayList<String>> replacements = new HashMap<>();
   private String targetMolecule;
+  private HashSet<Integer> steps = new HashSet<>();
 
   public static void main(String[] args) {
     ArrayList<String> data = ReadTextFile.readFile(day);
@@ -24,9 +26,25 @@ public class Day19 {
   }
 
   private int starTwo() {
-    HashSet<String> next = generateSingleStepStates("e");
-    System.out.println(next);
-    return -1;
+    System.out.println("Searching for: " + targetMolecule);
+    System.out.println("-----------------------------------------------");
+    findTargetMolecule(generateSingleStepStates("e"), 1);
+    return Collections.min(steps);
+  }
+
+  private void findTargetMolecule(HashSet<String> molecules, int numSteps) {
+    int maxLength = targetMolecule.length() + 5;
+    for (String molecule : molecules) {
+      if (molecule.length() > maxLength || numSteps > 10) continue;
+      HashSet<String> transitions = generateSingleStepStates(molecule);
+      for (String candidateMolecule : transitions) {
+        if (candidateMolecule.equals(targetMolecule)) {
+          int finalSteps = numSteps + 1;
+          steps.add(finalSteps);
+        }
+      }
+      findTargetMolecule(transitions, numSteps + 1);
+    }
   }
 
   private HashSet<String> generateSingleStepStates(String molecule) {

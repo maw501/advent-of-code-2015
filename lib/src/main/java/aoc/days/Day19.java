@@ -2,16 +2,13 @@ package aoc.days;
 
 import aoc.utils.ReadTextFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Day19 {
   private static final int day = 19;
   private final HashMap<String, ArrayList<String>> replacements = new HashMap<>();
   private String targetMolecule;
-  private HashSet<Integer> steps = new HashSet<>();
+  // private HashSet<Integer> steps = new HashSet<>();
 
   public static void main(String[] args) {
     ArrayList<String> data = ReadTextFile.readFile(day);
@@ -27,24 +24,41 @@ public class Day19 {
 
   private int starTwo() {
     System.out.println("Searching for: " + targetMolecule);
-    System.out.println("-----------------------------------------------");
-    findTargetMolecule(generateSingleStepStates("e"), 1);
-    return Collections.min(steps);
+    return breadthFirstSearch("e");
   }
 
-  private void findTargetMolecule(HashSet<String> molecules, int numSteps) {
-    int maxLength = targetMolecule.length() + 5;
-    for (String molecule : molecules) {
-      if (molecule.length() > maxLength || numSteps > 10) continue;
-      HashSet<String> transitions = generateSingleStepStates(molecule);
-      for (String candidateMolecule : transitions) {
-        if (candidateMolecule.equals(targetMolecule)) {
-          int finalSteps = numSteps + 1;
-          steps.add(finalSteps);
+  private int breadthFirstSearch(String node) {
+    LinkedList<String> frontier = new LinkedList<>();
+    frontier.add(node);
+    HashSet<String> explored = new HashSet<>();
+    HashMap<String, Integer> levels = new HashMap<>();
+    levels.put(node, 0);
+    while (frontier.size() > 0) {
+      String state = frontier.removeFirst();
+      int stateLevel = levels.get(state);
+      // System.out.println("State: " + state);
+      explored.add(state);
+      if (state.equals(targetMolecule)) {
+        System.out.println("Woohoo");
+        return levels.get(state);
+      }
+      HashSet<String> neighbours = generateSingleStepStates(state);
+      // System.out.println("Neighbours: " + neighbours);
+      for (String neighbour : neighbours) {
+        if (!frontier.contains(neighbour) && !explored.contains(neighbour)) {
+          frontier.addLast(neighbour);
+          levels.put(neighbour, stateLevel + 1);
+          // System.out.println("Adding: " + neighbour);
         }
       }
-      findTargetMolecule(transitions, numSteps + 1);
+      // System.out.println("At level: " + stateLevel);
+      // System.out.println("Frontier: " + frontier);
+      // System.out.println("------------------------------------------------------------------");
+      System.out.println("Frontier size: " + frontier.size());
+      System.out.println("Num explored: " + explored.size());
+      // if (count > 2000) break;
     }
+    return -1;
   }
 
   private HashSet<String> generateSingleStepStates(String molecule) {

@@ -6,9 +6,8 @@ import java.util.*;
 
 public class Day19 {
   private static final int day = 19;
-  private final HashMap<String, ArrayList<String>> replacements = new HashMap<>();
+  private HashMap<String, ArrayList<String>> replacements = new HashMap<>();
   private String targetMolecule;
-  // private HashSet<Integer> steps = new HashSet<>();
 
   public static void main(String[] args) {
     ArrayList<String> data = ReadTextFile.readFile(day);
@@ -23,42 +22,21 @@ public class Day19 {
   }
 
   private int starTwo() {
-    System.out.println("Searching for: " + targetMolecule);
-    return breadthFirstSearch("e");
-  }
-
-  private int breadthFirstSearch(String node) {
-    LinkedList<String> frontier = new LinkedList<>();
-    frontier.add(node);
-    HashSet<String> explored = new HashSet<>();
-    HashMap<String, Integer> levels = new HashMap<>();
-    levels.put(node, 0);
-    while (frontier.size() > 0) {
-      String state = frontier.removeFirst();
-      int stateLevel = levels.get(state);
-      // System.out.println("State: " + state);
-      explored.add(state);
-      if (state.equals(targetMolecule)) {
-        System.out.println("Woohoo");
-        return levels.get(state);
+    int numRn = getAllIndicesFromMolecule(targetMolecule, "Rn").size();
+    int numAr = getAllIndicesFromMolecule(targetMolecule, "Ar").size();
+    int numY = getAllIndicesFromMolecule(targetMolecule, "Y").size();
+    int count = 0;
+    char prevChar = targetMolecule.charAt(0);
+    for (int i = 1; i < targetMolecule.length(); i++) {
+      char currChar = targetMolecule.charAt(i);
+      if (Character.isUpperCase(prevChar) && Character.isUpperCase(currChar)) {
+        count++;
+      } else if (Character.isUpperCase(currChar) && Character.isLowerCase(prevChar)) {
+        count++;
       }
-      HashSet<String> neighbours = generateSingleStepStates(state);
-      // System.out.println("Neighbours: " + neighbours);
-      for (String neighbour : neighbours) {
-        if (!frontier.contains(neighbour) && !explored.contains(neighbour)) {
-          frontier.addLast(neighbour);
-          levels.put(neighbour, stateLevel + 1);
-          // System.out.println("Adding: " + neighbour);
-        }
-      }
-      // System.out.println("At level: " + stateLevel);
-      // System.out.println("Frontier: " + frontier);
-      // System.out.println("------------------------------------------------------------------");
-      System.out.println("Frontier size: " + frontier.size());
-      System.out.println("Num explored: " + explored.size());
-      // if (count > 2000) break;
     }
-    return -1;
+    int numElements = count + 1; // add 1 to account for last element
+    return numElements - numRn - numAr - 2 * numY - 1;
   }
 
   private HashSet<String> generateSingleStepStates(String molecule) {

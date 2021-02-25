@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'aoc.days.Day20'
+mainClassName = 'aoc.Main'
 
 repositories {
     mavenCentral()

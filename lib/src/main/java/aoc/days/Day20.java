@@ -1,15 +1,12 @@
 package aoc.days;
 
-import org.apache.commons.math3.optim.InitialGuess;
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Day20 {
   private static final int day = 20;
-  private static final int starOneTarget = 36000000;
-  private HashMap<Integer, Integer> elfVisitCount = new HashMap<>();
+  private static final int target = 36000000;
+  private final HashMap<Integer, Integer> elfVisitCount = new HashMap<>();
 
   public static void main(String[] args) {
     Day20 day20 = new Day20();
@@ -20,7 +17,7 @@ public class Day20 {
   private int starOne() {
     int numberOfPresents = 0;
     int houseNumber = 1;
-    while (numberOfPresents < starOneTarget) {
+    while (numberOfPresents < target) {
       ArrayList<Integer> visitors = calculateFactors(houseNumber);
       numberOfPresents = calculateHousePresents(visitors, 10);
       houseNumber++;
@@ -31,7 +28,7 @@ public class Day20 {
   private int starTwo() {
     int numberOfPresents = 0;
     int houseNumber = 1;
-    while (numberOfPresents < starOneTarget) {
+    while (numberOfPresents < target) {
       ArrayList<Integer> visitors = calculateFactors(houseNumber);
       updateElfVisitCount(visitors);
       visitors = checkElfCapacity(visitors);
@@ -71,7 +68,7 @@ public class Day20 {
   public ArrayList<Integer> calculateFactors(int num) {
     ArrayList<Integer> factors = new ArrayList<Integer>();
     // Skip two if the number is odd
-    int incrementer = num % 2 == 0 ? 1 : 2;
+    var incrementer = num % 2 == 0 ? 1 : 2;
     for (int i = 1; i <= Math.sqrt(num); i += incrementer) {
       if (num % i == 0) {
         factors.add(i);

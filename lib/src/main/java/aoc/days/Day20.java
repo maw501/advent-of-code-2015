@@ -33,7 +33,6 @@ public class Day20 {
     // Skip two if the number is odd
     int incrementer = num % 2 == 0 ? 1 : 2;
     for (int i = 1; i <= Math.sqrt(num); i += incrementer) {
-      // If there is no remainder, then the number is a factor.
       if (num % i == 0) {
         factors.add(i);
         // Skip duplicates

@@ -1,13 +1,11 @@
 package aoc.utils;
 
 public class Fighter {
-  private final String name;
   private int hitPoints;
   private final int damage;
   private final int armor;
 
-  public Fighter(String name, int hitPoints, int damage, int armor) {
-    this.name = name;
+  public Fighter(int hitPoints, int damage, int armor) {
     this.hitPoints = hitPoints;
     this.damage = damage;
     this.armor = armor;
@@ -20,8 +18,6 @@ public class Fighter {
 
   private void setHitPoints(int damageToDeduct) {
     hitPoints -= damageToDeduct;
-    System.out.println(
-        name + " took hit of: " + damageToDeduct + ", hitPoints remaining: " + hitPoints);
   }
 
   public boolean zeroHitPoints() {

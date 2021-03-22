@@ -36,9 +36,7 @@ public class Game {
     this.bossDamage = initGame.bossDamage;
     this.totalCost = initGame.totalCost;
     this.availableSpells = new HashSet<>(initGame.availableSpells);
-    for (String s : initGame.activeSpells.keySet()) {
-      this.activeSpells.put(s, initGame.activeSpells.get(s));
-    }
+    this.activeSpells.putAll(initGame.activeSpells);
   }
 
   public boolean takeTurn() {

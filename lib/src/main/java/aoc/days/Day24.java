@@ -64,8 +64,7 @@ public class Day24 {
         }
         if (sum(subset) == targetWeight) {
           if (useTrunk) {
-            ArrayList<Integer> tmp = removeSubsetFromWeights(subset_ids);
-            can_solve_partition = partition3(tmp);
+            can_solve_partition = partition3(removeSubsetFromWeights(subset_ids));
           } else {
             can_solve_partition = partition(removeSubsetFromWeights(subset_ids));
           }

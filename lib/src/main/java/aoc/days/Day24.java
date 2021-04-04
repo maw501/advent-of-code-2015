@@ -44,31 +44,16 @@ public class Day24 {
 
   private ArrayList<int[]> balanceSleigh(boolean useTrunk) {
     boolean found_solution_of_size_k = false;
-    boolean can_solve_partition;
-    int targetWeight;
-    if (useTrunk) {
-      targetWeight = sum(weights) / 4;
-    } else {
-      targetWeight = sum(weights) / 3;
-    }
+    int targetWeight = calculateTargetWeight(useTrunk);
     ArrayList<int[]> solutions = new ArrayList<>();
 
     for (int k = 2; k < weights.size() - 1; k++) {
       solutions = new ArrayList<>();
       Combinations subsets_size_k = new Combinations(weights.size(), k);
-      int[] subset;
       for (int[] subset_ids : subsets_size_k) {
-        subset = new int[subset_ids.length];
-        for (int i = 0; i < subset_ids.length; i++) {
-          subset[i] = weights.get(subset_ids[i]);
-        }
+        int[] subset = getSubsetFromSubsetIDs(subset_ids);
         if (sum(subset) == targetWeight) {
-          if (useTrunk) {
-            can_solve_partition = partition3(removeSubsetFromWeights(subset_ids));
-          } else {
-            can_solve_partition = partition(removeSubsetFromWeights(subset_ids));
-          }
-          if (can_solve_partition) {
+          if (canSolvePartition(subset_ids, useTrunk)) {
             found_solution_of_size_k = true;
             solutions.add(subset);
           }
@@ -77,6 +62,30 @@ public class Day24 {
       if (found_solution_of_size_k) break;
     }
     return solutions;
+  }
+
+  private boolean canSolvePartition(int[] subset_ids, boolean useTrunk) {
+    if (useTrunk) {
+      return partition3(removeSubsetFromWeights(subset_ids));
+    } else {
+      return partition(removeSubsetFromWeights(subset_ids));
+    }
+  }
+
+  private int[] getSubsetFromSubsetIDs(int[] subset_ids) {
+    int[] subset = new int[subset_ids.length];
+    for (int i = 0; i < subset_ids.length; i++) {
+      subset[i] = weights.get(subset_ids[i]);
+    }
+    return subset;
+  }
+
+  private int calculateTargetWeight(boolean useTrunk) {
+    if (useTrunk) {
+      return sum(weights) / 4;
+    } else {
+      return sum(weights) / 3;
+    }
   }
 
   private boolean partition(ArrayList<Integer> array) {

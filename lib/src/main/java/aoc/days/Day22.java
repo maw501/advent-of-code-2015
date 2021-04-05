@@ -11,8 +11,8 @@ public class Day22 {
 
   public static void main(String[] args) {
     Day22 day22 = new Day22();
-    System.out.println("Day " + day + " star One: " + day22.play(false));
-    System.out.println("Day " + day + " star Two: " + day22.play(true));
+    System.out.println("Day " + day + " star 1: " + day22.play(false));
+    System.out.println("Day " + day + " star 2: " + day22.play(true));
   }
 
   private void buildSpells() {

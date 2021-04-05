@@ -18,4 +18,4 @@ Once the package is built you can run by executing:
 ./gradlew run
 ```
 
-which will print out solutions for all days, this takes less than 30 seconds.
+which will print out solutions for all days, this takes less than 15 seconds.

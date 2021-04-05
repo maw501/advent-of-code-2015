@@ -24,5 +24,10 @@ public class Main {
     Day18.main(null);
     Day19.main(null);
     Day20.main(null);
+    Day21.main(null);
+    Day22.main(null);
+    Day23.main(null);
+    Day24.main(null);
+    Day25.main(null);
   }
 }

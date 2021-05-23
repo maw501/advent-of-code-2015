@@ -5,8 +5,7 @@ challenges as a way to learn a bit of Java.
 
 ### Running the code
 
-Clone the repository and then build the package
-using [gradle](https://docs.gradle.org/current/userguide/userguide.html):
+Clone the repository and then build the package:
 
 ```
 ./gradlew build
